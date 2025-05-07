@@ -24,6 +24,15 @@ function createServer() {
     const publicPath = path.join(__dirname, '..', 'public');
     const fullPath = path.join(publicPath, normalizedPath);
 
+    const pathSegments = normalizedPath.split(path.sep);
+
+    if (pathSegments.includes('..')) {
+      res.statusCode = 400;
+      res.end('Bad Request');
+
+      return;
+    }
+
     if (pathname.includes('//')) {
       res.statusCode = 404;
       res.end('Paths having duplicated slashes');
